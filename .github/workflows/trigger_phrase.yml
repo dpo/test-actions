@@ -1,0 +1,32 @@
+name: Trigger Phrase Workflow
+on:
+  pull_request:
+    types: [opened]
+  issue_comment:
+    types: [created]
+jobs:
+  do_something:
+    name: Task
+    runs-on: ubuntu-latest
+    if: ${{ github.event.comment &&
+            github.event.issue.pull_request &&
+            startsWith(github.event.comment.body, '/triggerjob') }}
+    steps:
+      - name: rocket
+        run: |
+          # send reaction to comment to show build was triggered
+          curl ${{github.event.comment.url}}/reactions \
+            -X POST \
+            -d '{"content":"rocket"}' \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{github.token}}"
+      - uses: actions/checkout@v3
+      - name: create artifacts
+        run: |
+          echo ${{ github.event.comment.body }}
+          echo "BLA" > artifact.txt
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: secret_message
+          path: artifact.txt
