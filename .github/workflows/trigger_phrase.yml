@@ -2,7 +2,7 @@ name: Trigger Phrase Workflow
 on:
   pull_request:
   issue_comment:
-    types: [opened, synchronize, reopened, edited]
+    types: [created]
   workflow_dispatch:
 
 jobs:
