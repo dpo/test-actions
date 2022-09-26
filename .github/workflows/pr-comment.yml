@@ -11,7 +11,7 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: add artifact links to pull request and related issues step
-        uses: veitbjarsch/artifacts-url-comments@v1.1.0
+        uses: dpo/artifacts-url-comments#master
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
