@@ -1,7 +1,7 @@
 name: Trigger Phrase Workflow
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened, edited]
 jobs:
   do_something:
     name: Task
