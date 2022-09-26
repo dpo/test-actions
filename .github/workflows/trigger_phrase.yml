@@ -2,8 +2,6 @@ name: Trigger Phrase Workflow
 on:
   pull_request:
     types: [opened]
-  issue_comment:
-    types: [created]
 jobs:
   do_something:
     name: Task
