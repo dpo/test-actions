@@ -1,7 +1,10 @@
 name: Trigger Phrase Workflow
 on:
   pull_request:
+  issue_comment:
     types: [opened, synchronize, reopened, edited]
+  workflow_dispatch:
+
 jobs:
   do_something:
     name: Task
