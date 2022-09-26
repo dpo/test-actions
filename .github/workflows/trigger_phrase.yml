@@ -21,10 +21,15 @@ jobs:
             -d '{"content":"rocket"}' \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${{github.token}}"
+      - name: get arguments
+        id: get-args
+        run: |
+          args=$(echo ${{github.event.comment.body}} | awk '{for (i=2; i<NF; i++) printf $i " "; printf $NF}')
+          echo "::set-output name=args::$args"
       - uses: actions/checkout@v3
       - name: create artifacts
         run: |
-          echo ${{ github.event.comment.body }}
+          echo "${{ steps.get-args.outputs.args }}"
           echo "BLA" > artifact.txt
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
