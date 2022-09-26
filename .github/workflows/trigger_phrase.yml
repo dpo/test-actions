@@ -36,3 +36,13 @@ jobs:
         with:
           name: secret_message
           path: artifact.txt
+      - name: Add Comment to Pull Request
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'The artifacts are ready!'
+            })
