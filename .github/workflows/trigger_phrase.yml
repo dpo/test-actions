@@ -56,7 +56,7 @@ jobs:
             const fs = require('fs');
             var gist_json = {};
             gist_json["description"] = "${{ github.repo }} Benchmarks"
-            gist_files = {}
+            var gist_files = {}
             fs.readdir('artifact_dir', (err, files) => {
               if (!err)
                 files.forEach(file => {
