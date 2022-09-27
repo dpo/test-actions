@@ -55,7 +55,7 @@ jobs:
           script: |
             const fs = require('fs');
             var gist_files = {}
-            fs.readdir('artifact_dir', (err, files) => {
+            await fs.readdir('artifact_dir', (err, files) => {
               if (!err)
                 files.forEach(file => {
                   fs.lstat(file, (err, stats) => {
