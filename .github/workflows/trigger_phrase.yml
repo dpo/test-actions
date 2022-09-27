@@ -20,7 +20,7 @@ jobs:
             -X POST \
             -d '{"content":"rocket"}' \
             -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${{github.token}}"
+            -H "Authorization: Bearer ${{ github.token }}"
       - name: get arguments
         id: get-args
         run: |
@@ -30,12 +30,14 @@ jobs:
       - name: create artifacts
         run: |
           echo "${{ steps.get-args.outputs.args }}"
-          echo "BLA" > artifact.txt
+          mkdir artifact_dir
+          echo "BLA" > artifact_dir/artifact1.txt
+          echo "${{ steps.get-args.outputs.args }}" > artifact_dir/artifact2.txt
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
           name: secret_message
-          path: artifact.txt
+          path: artifact_dir
       - name: Add Comment to Pull Request
         uses: actions/github-script@v6
         with:
@@ -44,5 +46,35 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'The artifacts are ready!'
+              body: ':chart_with_upwards_trend: The artifacts are ready!'
             })
+      - name: Build Gist JSON
+        id: gistjson
+        uses: actions/github-script@v6
+        with:
+          result-encoding: string
+          script: |
+            const fs = require('fs');
+            var gist_json = {};
+            gist_json["description"] = "${{ github.repo }} Benchmarks"
+            gist_files = {}
+            fs.readdir(dirName, (err, files) => {
+              if (!err)
+                files.forEach(file => {
+                  fs.lstat(file, (err, stats) => {
+                    if (!err)
+                      if (stats.isFile())
+                        gist_files[file] = fs.readFileSync(file, "utf8").toString();
+                  });
+                });
+            });
+            gist_json["files"] = gist_files;
+            return gist_json;
+      - name: Update Gist
+        run: |
+          curl \
+            -X PATCH \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ github.token }}" \
+            https://api.github.com/gists/${{ secrets.GIST_ID }}\
+            -d ${{ steps.gistjson.outputs.result }}
