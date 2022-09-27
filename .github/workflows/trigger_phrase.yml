@@ -56,7 +56,7 @@ jobs:
             const fs = require('fs');
             function grabFiles(dirName) {
               var gist_files = {}
-              await fs.readdir(dirName, (err, files) => {
+              fs.readdir(dirName, (err, files) => {
                 if (!err)
                   files.forEach(file => {
                     fs.lstat(file, (err, stats) => {
