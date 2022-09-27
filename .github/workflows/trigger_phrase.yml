@@ -54,8 +54,6 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            var gist_json = {};
-            gist_json["description"] = "${{ github.repo }} Benchmarks"
             var gist_files = {}
             fs.readdir('artifact_dir', (err, files) => {
               if (!err)
@@ -67,8 +65,7 @@ jobs:
                   });
                 });
             });
-            gist_json["files"] = gist_files;
-            return gist_json;
+            return gist_files;
       - name: Update Gist
         run: |
           curl \
@@ -76,4 +73,4 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${{ github.token }}" \
             https://api.github.com/gists/${{ secrets.GIST_ID }} \
-            -d ${{ steps.gistjson.outputs.result }}
+            -d '"description": "${{ github.repo }} Artifacts", "files": ${{ steps.gistjson.outputs.result }}'
