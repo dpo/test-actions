@@ -52,7 +52,6 @@ jobs:
         id: gistjson
         uses: actions/github-script@v6
         with:
-          result-encoding: string
           script: |
             const fs = require('fs');
             var gist_json = {};
@@ -76,5 +75,5 @@ jobs:
             -X PATCH \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${{ github.token }}" \
-            https://api.github.com/gists/${{ secrets.GIST_ID }}\
+            https://api.github.com/gists/${{ secrets.GIST_ID }} \
             -d ${{ steps.gistjson.outputs.result }}
