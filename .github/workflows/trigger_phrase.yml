@@ -54,17 +54,22 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            var gist_files = {}
-            await fs.readdir('artifact_dir', (err, files) => {
-              if (!err)
-                files.forEach(file => {
-                  fs.lstat(file, (err, stats) => {
-                    if (!err)
-                      if (stats.isFile())
-                        gist_files[file] = fs.readFileSync(file, "utf8").toString();
+            function grabFiles(dirName) {
+              var gist_files = {}
+              await fs.readdir(dirName, (err, files) => {
+                if (!err)
+                  files.forEach(file => {
+                    fs.lstat(file, (err, stats) => {
+                      if (!err)
+                        if (stats.isFile())
+                          gist_files[file] = fs.readFileSync(file, "utf8").toString();
+                          console.log(file);
+                    });
                   });
-                });
-            });
+              });
+              return gist_files;
+            }
+            const gist_files = await grabFiles('artifact_dir');
             return gist_files;
       - name: Update Gist
         run: |
