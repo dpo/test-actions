@@ -58,7 +58,7 @@ jobs:
             var gist_json = {};
             gist_json["description"] = "${{ github.repo }} Benchmarks"
             gist_files = {}
-            fs.readdir(dirName, (err, files) => {
+            fs.readdir('artifact_dir', (err, files) => {
               if (!err)
                 files.forEach(file => {
                   fs.lstat(file, (err, stats) => {
