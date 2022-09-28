@@ -54,22 +54,13 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            function grabFiles(dirName) {
-              var gist_files = {}
-              fs.readdirSync(dirName, (err, files) => {
-                if (!err)
-                  files.forEach(file => {
-                    fs.lstat(file, (err, stats) => {
-                      if (!err)
-                        if (stats.isFile())
-                          gist_files[file] = fs.readFileSync(file, "utf8").toString();
-                          console.log(file);
-                    });
-                  });
-              });
-              return gist_files;
-            }
-            const gist_files = await grabFiles('artifact_dir');
+            const path = require('node:path');
+            const artifact_dir = 'artifact_dir';
+            var gist_files = {};
+            const files = fs.readdirSync(artifact_dir);
+            # simple loop assumes all files are regular files
+            for (const file of files)
+              gist_files[file] = fs.readFileSync(path.join(artifact_dir, file), "utf8").toString();
             return gist_files;
       - name: Update Gist
         run: |
