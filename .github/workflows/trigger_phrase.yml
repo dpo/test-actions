@@ -58,7 +58,7 @@ jobs:
             const artifact_dir = 'artifact_dir';
             var gist_files = {};
             const files = fs.readdirSync(artifact_dir);
-            # simple loop assumes all files are regular files
+            // simple loop assumes all files are regular text files
             for (const file of files)
               gist_files[file] = fs.readFileSync(path.join(artifact_dir, file), "utf8").toString();
             return gist_files;
