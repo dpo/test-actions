@@ -48,6 +48,8 @@ jobs:
               run_id: github.run_id
             });
             const artifact_list = await github.paginate(opts);
+            console.log(artifact_list);
+            console.log(artifact_list.artifacts);
             // Assume there is a single artifact
             const url = artifact_list.artifacts[1].archive_download_url;
             github.rest.issues.createComment({
