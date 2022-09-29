@@ -19,12 +19,15 @@ jobs:
               repo: context.repo.repo,
               // run_id: github.run_id
             });
+            console.log('opts: ', opts);
             const artifact_list = await github.paginate(opts);
-            console.log(opts);
-            console.log(artifact_list);
+            console.log('artifact_list: ', artifact_list);
+            const artifact = artifact_list[1];
+            console.log('artifact: ', artifact);
             // console.log(artifact_list.artifacts);
             // Assume there is a single artifact
             const url = artifact_list[1].archive_download_url;
+            console.log('url: ', url);
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
