@@ -42,7 +42,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const opts = github.request('GET /repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts', {
+            const opts = await github.request('GET /repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts', {
               owner: context.repo.owner,
               repo: context.repo.repo,
               run_id: github.run_id
