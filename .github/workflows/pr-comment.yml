@@ -8,6 +8,7 @@ jobs:
   artifacts-url-comments:
     name: add artifact links to pull request and related issues job
     runs-on: [ubuntu-latest]
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Add Comment to Pull Request
         uses: actions/github-script@v6
@@ -20,14 +21,16 @@ jobs:
               // run_id: github.run_id
             });
             console.log('opts: ', opts);
-            const artifact_list = await github.paginate(opts);
+            artifact_list = await github.paginate(opts);
             console.log('artifact_list: ', artifact_list);
-            const artifact = artifact_list[1];
+            // Sort artifacts according to last update date
+            artifact_list.sort((a, b) => (a.updated_at < b.updated_at) ? 1 : (a.updated_at > b.updated_at) ? -1 : 0)
+            const artifact = artifact_list[1];  // Grab most recent artifact
             console.log('artifact: ', artifact);
-            // console.log(artifact_list.artifacts);
-            // Assume there is a single artifact
-            const url = artifact_list[1].archive_download_url;
+            // Assume the workflow produced a single artifact
+            const url = artifact.archive_download_url;
             console.log('url: ', url);
+            console.log('payload artifacts_url: ', github.event.payload.workflow_run.artifacts_url);
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
