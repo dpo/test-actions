@@ -60,7 +60,7 @@ jobs:
             const files = fs.readdirSync(artifact_dir);
             // simple loop assumes all files are regular text files
             for (const file of files)
-              gist_files[file] = fs.readFileSync(path.join(artifact_dir, file), "utf8").toString();
+              gist_files[file] = {"content": fs.readFileSync(path.join(artifact_dir, file), "utf8").toString()};
             return gist_files;
       - name: Update Gist
         run: |
@@ -69,4 +69,4 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${{ secrets.GIST_TOKEN }}" \
             https://api.github.com/gists/${{ secrets.GIST_ID }} \
-            -d '"description": "${{ github.repo }} Artifacts", "files": ${{ steps.gistjson.outputs.result }}'
+            -d '{"description": "${{ github.repo }} Artifacts", "files": ${{ steps.gistjson.outputs.result }} }'
