@@ -67,6 +67,6 @@ jobs:
           curl \
             -X PATCH \
             -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${{ github.token }}" \
+            -H "Authorization: Bearer ${{ secrets.GIST_TOKEN }}" \
             https://api.github.com/gists/${{ secrets.GIST_ID }} \
             -d '"description": "${{ github.repo }} Artifacts", "files": ${{ steps.gistjson.outputs.result }}'
