@@ -48,6 +48,7 @@ jobs:
               run_id: github.run_id
             });
             const artifact_list = await github.paginate(opts);
+            console.log(opts);
             console.log(artifact_list);
             console.log(artifact_list.artifacts);
             // Assume there is a single artifact
