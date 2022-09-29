@@ -42,11 +42,18 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
+            const artifact_list = github.request('GET /repos/${{ context.repo.owner }}/${{ context.repo.repo }}/actions/runs/${{ github.run_id }}/artifacts', {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: github.run_id
+            });
+            // Assume there is a single artifact
+            const url = artifact_list.artifacts[1].archive_download_url;
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: ':chart_with_upwards_trend: The artifacts are ready!'
+              body: ':chart_with_upwards_trend: download artifacts here: ' + url;
             })
       - name: Build Gist JSON
         id: gistjson
