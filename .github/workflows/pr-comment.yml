@@ -1,0 +1,33 @@
+name: add artifact links to pr
+on:
+  workflow_run:
+    workflows: ["Trigger Phrase Workflow"]
+    types: [completed]
+
+jobs:
+  artifacts-url-comments:
+    name: add artifact links to pull request and related issues job
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: Add Comment to Pull Request
+        uses: actions/github-script@v6
+        with:
+          script: |
+            // const opts = await github.request('GET /repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts', {
+            const opts = await github.request('GET /repos/${{ github.repository }}/actions/artifacts', {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              // run_id: github.run_id
+            });
+            const artifact_list = await github.paginate(opts);
+            console.log(opts);
+            console.log(artifact_list);
+            console.log(artifact_list.artifacts);
+            // Assume there is a single artifact
+            const url = artifact_list.artifacts[1].archive_download_url;
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: ':chart_with_upwards_trend: download artifacts here: ' + url
+            })
