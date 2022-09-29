@@ -30,7 +30,7 @@ jobs:
             // Assume the workflow produced a single artifact
             const url = artifact.archive_download_url;
             console.log('url: ', url);
-            console.log('payload artifacts_url: ', github.event.payload.workflow_run.artifacts_url);
+            console.log('payload artifacts_url: ', context.payload.workflow_run.artifacts_url);
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
