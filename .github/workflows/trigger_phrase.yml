@@ -43,8 +43,8 @@ jobs:
         with:
           script: |
             const artifact_list = github.request('GET /repos/${{ context.repo.owner }}/${{ context.repo.repo }}/actions/runs/${{ github.run_id }}/artifacts', {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
+              owner: github.repo.owner,
+              repo: github.repo,
               run_id: github.run_id
             });
             // Assume there is a single artifact
