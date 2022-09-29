@@ -53,7 +53,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: ':chart_with_upwards_trend: download artifacts here: ' + url;
+              body: ':chart_with_upwards_trend: download artifacts here: ' + url
             })
       - name: Build Gist JSON
         id: gistjson
