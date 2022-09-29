@@ -22,9 +22,9 @@ jobs:
             const artifact_list = await github.paginate(opts);
             console.log(opts);
             console.log(artifact_list);
-            console.log(artifact_list.artifacts);
+            // console.log(artifact_list.artifacts);
             // Assume there is a single artifact
-            const url = artifact_list.artifacts[1].archive_download_url;
+            const url = artifact_list[1].archive_download_url;
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
