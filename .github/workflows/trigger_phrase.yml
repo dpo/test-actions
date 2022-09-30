@@ -68,5 +68,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: ':chart_with_upwards_trend: results are in https://api.github.com/gists/${{ secrets.GIST_ID }}'
+              body: ':chart_with_upwards_trend: results are in https://gist.github.com/${{ context.repo.owner }}/${{ secrets.GIST_ID }}'
             })
