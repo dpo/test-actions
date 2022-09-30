@@ -25,11 +25,11 @@ jobs:
             console.log('artifact_list: ', artifact_list);
             // Sort artifacts according to last update date
             artifact_list.sort((a, b) => (a.updated_at < b.updated_at) ? 1 : (a.updated_at > b.updated_at) ? -1 : 0);
-            // const artifact = artifact_list[1];  // Grab most recent artifact
-            // console.log('artifact: ', artifact);
+            const artifact = artifact_list[1];  // Grab most recent artifact
+            console.log('artifact: ', artifact);
             // const url = artifact.archive_download_url;
             // console.log('url: ', url);
-            console.log('payload artifacts_url: ', context.payload.workflow_run.artifacts_url);
+            // console.log('payload artifacts_url: ', context.payload.workflow_run.artifacts_url);
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
