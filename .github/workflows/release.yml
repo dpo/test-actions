@@ -16,9 +16,10 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
+            console.log(context.payload);
             github.rest.repos.createCommitComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              commit_sha: github.event.head_commit.id,
+              commit_sha: context.payload.head_commit.id,
               body: "Hear ye, hear ye!",
             });
