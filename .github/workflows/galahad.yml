@@ -14,14 +14,16 @@ jobs:
         os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     env:
-      ARCHDEFS: ${{ github.workspace }}
-      GALAHAD: ${{ github.workspace }}
+      ARCHDEFS: ${{ github.workspace }}/ARCHDefs
+      GALAHAD: ${{ github.workspace }}/GALAHAD
     steps:
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@master
       - name: Install C and Fortran compilers
-        run: brew install gcc
-      - name: download ARCHDefs
+        run: |
+          brew update
+          brew install gcc
+      - name: Download ARCHDefs
         id: download-archdefs
         uses: robinraju/release-downloader@v1.5
         with:
@@ -29,7 +31,33 @@ jobs:
           latest: true
           tarBall: true
           out-file-path: ""
-      - name: unpack ARCHDefs
+      - name: Unpack ARCHDefs
         run: |
-          echo ${{ steps.download-archdefs.outputs.tag_name }}
+          tar zxf ARCHDefs-${{ steps.download-archdefs.outputs.tag_name }}.tar.gz
+          mv ARCHDefs-${{ steps.download-archdefs.outputs.tag_name }} ARCHDefs
+          ls $ARCHDEFS
+      - name: Check out GALAHAD
+        # uses: actions/checkout@v3
+        run: |
+          git checkout https://github.com/ralna/GALAHAD.git
+      - name: Build GALAHAD
+        run: |
+          cd $GALAHAD
+          if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]
+          then
+            printf "y1\nnnnyn4\nn" > install_config
+          else
+            printf "y1\nnnnyn6\nn2\nn5\nnyb" > install_config
+          fi
+          $ARCHDEFS/bin/install_optrove < install_config
+      - name: Test C interfaces
+        run: |
+          cd $GALAHAD/src
+          arch=$(ls $GAHALAD/makefiles | head -1)
+          make -s -f $GALAHAD/makefiles/$arch test_all_ciface
+      - name: Test GALAHAD
+        run: |
+          cd $GALAHAD/src
+          arch=$(ls $GAHALAD/makefiles | head -1)
+          make -s -f $GALAHAD/makefiles/$arch tests
 
