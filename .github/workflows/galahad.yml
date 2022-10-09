@@ -34,7 +34,7 @@ jobs:
       - name: Unpack ARCHDefs
         run: |
           tar zxf ARCHDefs-${{ steps.download-archdefs.outputs.tag_name }}.tar.gz
-          mv ARCHDefs-${{ steps.download-archdefs.outputs.tag_name }} ARCHDefs
+          mv ${{ steps.download-archdefs.outputs.tag_name }} ARCHDefs
           ls $ARCHDEFS
       - name: Check out GALAHAD
         # uses: actions/checkout@v3
