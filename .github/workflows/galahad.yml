@@ -46,7 +46,7 @@ jobs:
           cd $GALAHAD
           if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]
           then
-            printf "y1\nnnnyn4\nn1\nn" > install_config
+            printf "y1\nN\n4\n1\nn6\nn8\nnyb" > install_config
           else
             printf "y1\nnnnyn6\nn2\nn5\nnyb" > install_config
           fi
