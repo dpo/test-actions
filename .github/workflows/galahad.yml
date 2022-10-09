@@ -49,7 +49,7 @@ jobs:
           else
             printf "y1\nnnnyn6\nn2\nn5\nnyb" > install_config
           fi
-          $ARCHDEFS/bin/install_optrove < install_config
+          bash $ARCHDEFS/bin/install_optrove < install_config
       - name: Test C interfaces
         run: |
           cd $GALAHAD/src
