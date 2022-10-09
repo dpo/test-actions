@@ -1,0 +1,35 @@
+name: CI
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  build:
+    name: GALAHAD ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    env:
+      ARCHDEFS: ${{ github.workspace }}
+      GALAHAD: ${{ github.workspace }}
+    steps:
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+      - name: Install C and Fortran compilers
+        run: brew install gcc
+      - name: download ARCHDefs
+        id: download-archdefs
+        uses: robinraju/release-downloader@v1.5
+        with:
+          repository: "ralna/ARCHDefs"
+          latest: true
+          tarBall: true
+          out-file-path: ""
+      - name: unpack ARCHDefs
+        run: |
+          echo ${{ steps.download-archdefs.outputs.tag_name }}
+
