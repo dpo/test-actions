@@ -34,14 +34,9 @@ jobs:
       - name: Unpack ARCHDefs
         run: |
           tar zxf ARCHDefs-${{ steps.download-archdefs.outputs.tag_name }}.tar.gz
-          ver=$(echo ${{ steps.download-archdefs.outputs.tag_name }} | sed -e 's/^v//')
-          # mv ARCHDefs-$ver ARCHDefs
-          # echo "here: $PWD"
-          # ls
-          # echo "workspace: ${{ github.workspace }}"
-          # ls $ARCHDEFS/
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+          mv ralna-ARCHDefs-* ARCHDefs
+      # - name: Setup tmate session
+      #   uses: mxschmitt/action-tmate@v3
       - name: Check out GALAHAD
         # uses: actions/checkout@v3
         run: |
